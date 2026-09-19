@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react'
 
 import AboutPage from '../pages/AboutPage'
 import BlackHolePage from '../pages/BlackHolePage'
-import { stripBase, withBase } from '../lib/basePath'
+import { splitLanguagePath, stripBase, withLanguagePath } from '../lib/basePath'
+import type { AppLanguage } from '../i18n/language'
 import LandingPage from '../pages/LandingPage'
 
 function getPathname() {
-  const normalizedPath = stripBase(window.location.pathname).toLowerCase()
+  const { path } = splitLanguagePath(stripBase(window.location.pathname))
+  const normalizedPath = path.toLowerCase()
 
   if (normalizedPath.length > 1 && normalizedPath.endsWith('/')) {
     return normalizedPath.slice(0, -1)
@@ -15,14 +17,15 @@ function getPathname() {
   return normalizedPath
 }
 
-function getLanguageQuery() {
-  const normalizedLanguage = new URLSearchParams(window.location.search).get('lang')?.toUpperCase()
+function getCurrentLanguage(): AppLanguage {
+  const { language } = splitLanguagePath(stripBase(window.location.pathname))
 
-  if (normalizedLanguage === 'CN' || normalizedLanguage === 'EN') {
-    return `?lang=${normalizedLanguage}`
+  if (language) {
+    return language
   }
 
-  return ''
+  const queryLanguage = new URLSearchParams(window.location.search).get('lang')?.toUpperCase()
+  return queryLanguage === 'EN' || queryLanguage === 'ENG' ? 'en' : 'zh'
 }
 
 export function navigate(path: string) {
@@ -30,7 +33,7 @@ export function navigate(path: string) {
     return
   }
 
-  window.history.pushState({}, '', `${withBase(path)}${getLanguageQuery()}`)
+  window.history.pushState({}, '', withLanguagePath(path, getCurrentLanguage()))
   window.dispatchEvent(new PopStateEvent('popstate'))
 }
 

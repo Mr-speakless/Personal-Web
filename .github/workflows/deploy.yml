@@ -32,20 +32,30 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: Archive/package-lock.json
 
-      - name: Install dependencies
+      # ---- Archived site -> https://shuoyuewu.com/old/ ----
+      - name: Install archive dependencies
+        working-directory: Archive
         run: npm ci
 
-      - name: Build site
+      - name: Build archive site
+        working-directory: Archive
         run: npm run build
 
-      - name: Add SPA fallback
-        run: cp dist/index.html dist/404.html
+      # ---- Assemble the final site tree ----
+      - name: Assemble site
+        run: |
+          mkdir -p site/old
+          cp -R Archive/dist/. site/old/
+          # Root is intentionally blank until the new site is built.
+          cp site-root/index.html site/index.html
+          cp site-root/404.html site/404.html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: ./site
 
   deploy:
     needs: build

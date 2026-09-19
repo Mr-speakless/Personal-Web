@@ -6,6 +6,8 @@ import {
   type PropsWithChildren,
 } from 'react'
 
+import { splitLanguagePath, stripBase, withLanguagePath } from '../lib/basePath'
+
 export type AppLanguage = 'en' | 'zh'
 
 interface LanguageContextValue {
@@ -16,10 +18,6 @@ interface LanguageContextValue {
 
 const storageKey = 'portfolio-language'
 const fallbackLanguage: AppLanguage = 'zh'
-const languageQueryByCode: Record<AppLanguage, 'EN' | 'CN'> = {
-  en: 'EN',
-  zh: 'CN',
-}
 
 const LanguageContext = createContext<LanguageContextValue | null>(null)
 
@@ -28,6 +26,14 @@ function readLanguageFromUrl(): AppLanguage | null {
     return null
   }
 
+  // Path-based language takes priority: /old/CN/... or /old/ENG/...
+  const pathLanguage = splitLanguagePath(stripBase(window.location.pathname)).language
+
+  if (pathLanguage) {
+    return pathLanguage
+  }
+
+  // Legacy links: ?lang=CN / ?lang=EN and #CN / #EN
   const normalizedQueryLanguage = new URLSearchParams(window.location.search)
     .get('lang')
     ?.trim()
@@ -54,20 +60,22 @@ function readLanguageFromUrl(): AppLanguage | null {
   return null
 }
 
-function writeLanguageQueryToUrl(language: AppLanguage) {
+function writeLanguagePathToUrl(language: AppLanguage) {
   if (typeof window === 'undefined') {
     return
   }
 
-  const targetLanguage = languageQueryByCode[language]
-  const currentLanguage = new URLSearchParams(window.location.search).get('lang')?.toUpperCase()
+  const { language: currentLanguage, path } = splitLanguagePath(
+    stripBase(window.location.pathname),
+  )
 
-  if (currentLanguage === targetLanguage) {
+  if (currentLanguage === language) {
     return
   }
 
   const nextUrl = new URL(window.location.href)
-  nextUrl.searchParams.set('lang', targetLanguage)
+  nextUrl.pathname = withLanguagePath(path, language)
+  nextUrl.searchParams.delete('lang')
   window.history.replaceState(window.history.state, '', nextUrl.toString())
 }
 
@@ -104,8 +112,12 @@ export function LanguageProvider({ children }: PropsWithChildren) {
 
   const setLanguage = (nextLanguage: AppLanguage) => {
     setLanguageState(nextLanguage)
-    writeLanguageQueryToUrl(nextLanguage)
+    writeLanguagePathToUrl(nextLanguage)
   }
+
+  useEffect(() => {
+    writeLanguagePathToUrl(language)
+  }, [language])
 
   useEffect(() => {
     window.localStorage.setItem(storageKey, language)

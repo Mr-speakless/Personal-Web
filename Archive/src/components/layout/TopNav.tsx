@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { HoverRollText } from '../shared/HoverRollText'
 import { getUICopy } from '../../content/ui'
 import { useLanguage, type AppLanguage } from '../../i18n/language'
-import { withBase } from '../../lib/basePath'
+import { withBase, withLanguagePath } from '../../lib/basePath'
 import { LiquidGlassShader } from '../shared/LiquidGlassShader'
 import { sectionIds } from '../../lib/routes'
 
@@ -22,7 +22,6 @@ export function TopNav({
 }: TopNavProps) {
   const { language, setLanguage } = useLanguage()
   const uiCopy = getUICopy(language)
-  const languageQuery = language === 'zh' ? '?lang=CN' : '?lang=EN'
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false)
   const languageMenuRef = useRef<HTMLDivElement>(null)
   const handleWorkClick = () => onScrollToSection?.(sectionIds.work)
@@ -64,11 +63,11 @@ export function TopNav({
   }
   const navItemClassName =
     'text-[24px] leading-none [font-family:var(--font-sans-en)] md:text-[24px] md:leading-[24px]'
-  const homeHref = `${withBase('/')}${languageQuery}`
-  const aboutHref = `${withBase('/about')}${languageQuery}`
-  const blackholeHref = `${withBase('/blackhole')}${languageQuery}`
-  const workHref = `${withBase('/')}${languageQuery}#${sectionIds.work}`
-  const contactHref = `${withBase('/')}${languageQuery}#${sectionIds.contact}`
+  const homeHref = withLanguagePath('/', language)
+  const aboutHref = withLanguagePath('/about', language)
+  const blackholeHref = withLanguagePath('/blackhole', language)
+  const workHref = `${homeHref}#${sectionIds.work}`
+  const contactHref = `${homeHref}#${sectionIds.contact}`
 
   useEffect(() => {
     if (!isLanguageMenuOpen) {
