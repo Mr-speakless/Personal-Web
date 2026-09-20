@@ -1,0 +1,360 @@
+:root {
+  font-family: "Didact Gothic", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #fff;
+  background: #000;
+  --black: #000;
+  --white: #fff;
+  --border: #d9d9d9;
+  --surface: #ededed;
+  --subtle: #767676;
+  --muted: #333;
+  --page-padding: 20px;
+  /* Frame stroke / corner-mark size; overridden from src/config/frame.ts at startup. */
+  --stroke: 1px;
+  --corner: 4px;
+  --mark: var(--surface);
+  --transition: var(--motion-ms, 350ms) var(--motion-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; min-width: 320px; font-synthesis: none; }
+button, a { -webkit-tap-highlight-color: transparent; }
+a { color: inherit; }
+a:focus-visible, button:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+img, iframe, canvas { display: block; max-width: 100%; }
+figure, p, h1, h2, h3, dl, dd, ul { margin: 0; }
+h1, h2, h3 { font-weight: 400; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+ul { padding-left: 1.2em; }
+.site-header { position: sticky; top: var(--nav-top, 24px); z-index: 30; margin: 24px var(--page-padding) 0; background: #000; }
+/* JG / Navigation: links column grows, identity + email fixed 368px at 1512 (≈2:1:1). Logo fills the 54px row height. */
+.navigation { position: relative; display: flex; min-height: 54px; width: 100%; background: #000; align-items: stretch; font-size: 28px; line-height: 29.4px; }
+/* Identity/email cells sit on the navigation's own stroke. */
+.navigation > .frame { margin-top: calc(-1 * var(--stroke)); margin-bottom: calc(-1 * var(--stroke)); }
+.navigation > .frame + .frame { margin-left: calc(-1 * var(--stroke)); }
+.navigation > .frame:last-child { margin-right: calc(-1 * var(--stroke)); }
+.navigation__links { flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: 2px; padding-left: 8px; overflow: hidden; }
+.navigation__logo { display: flex; align-self: stretch; flex: none; align-items: center; padding: 8px; overflow: hidden; }
+.navigation__logo img { height: 100%; width: auto; aspect-ratio: 1 / 1; object-fit: contain; }
+.navigation__name, .navigation__email { flex: 0 1 368px; min-width: 0; display: flex; align-items: center; padding: 0 20px; white-space: nowrap; }
+.navigation__email { text-decoration: underline; text-underline-offset: 2px; }
+.pill-link { display: inline-flex; align-items: center; justify-content: center; height: 40px; padding: 0 12px; border: 2px solid var(--border); border-radius: 999px; text-decoration: none; font-size: 28px; line-height: 29.4px; white-space: nowrap; transition: color var(--transition), background var(--transition); }
+.pill-link:hover, .pill-link:focus-visible { color: #000; background: #fff; }
+/* Floating Work navigation: the logo slot animates from 0 width / off-left to its natural width. */
+.navigation--floating .navigation__logo { width: 54px; transform: translateX(0); opacity: 1; transition: width var(--transition), padding var(--transition), transform var(--transition), opacity var(--transition); }
+.work-floating-nav:not(.work-floating-nav--visible) .navigation__logo { width: 0; padding-left: 0; padding-right: 0; transform: translateX(-70px); opacity: 0; }
+.navigation--compact { min-height: 0; }
+.navigation--compact .navigation__links { padding: 0; }
+.work-floating-nav { position: fixed; top: var(--nav-top, 24px); left: var(--page-padding); right: var(--page-padding); z-index: 40; opacity: 0; transform: translateY(-120%); pointer-events: none; transition: opacity var(--transition), transform var(--transition); }
+.work-floating-nav--visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.work-hero { padding: 24px var(--page-padding) 0; }
+.work-hero__intro { display: flex; min-height: 255px; }
+.work-hero__intro > .frame { margin-top: calc(-1 * var(--stroke)); margin-bottom: calc(-1 * var(--stroke)); }
+.work-hero__intro > .frame + .frame { margin-left: calc(-1 * var(--stroke)); }
+.work-hero__intro > .frame:last-child { margin-right: calc(-1 * var(--stroke)); }
+.work-hero__nav { flex: 1 1 0; min-width: 0; padding: 14px 0 0 8px; }
+.work-hero__intro > p, .work-hero__contact { flex: 0 1 368px; min-width: 0; padding: 18px; font-size: 28px; line-height: 29.4px; overflow-wrap: anywhere; }
+.work-hero__contact { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+.work-hero__contact a { text-underline-offset: 2px; }
+/* Figma Work Title 35:3846: 1472×643 stage; the static render sits inset 200px left/right (13.6%). */
+.work-hero__stage { height: clamp(360px, 42.5vw, 643px); margin-top: 15px; position: relative; overflow: hidden; }
+.dot-field { position: absolute; inset: 0; width: 100%; height: 100%; }
+.logo-scene { position: absolute; inset: 0; }
+.logo-scene canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
+.logo-scene__still { position: absolute; inset: 0 13.6%; width: auto; max-width: none; height: 100%; object-fit: cover; opacity: 1; transition: opacity 0.6s ease; pointer-events: none; }
+.logo-scene--live .logo-scene__still { opacity: 0; }
+.work-section { padding: 20px var(--page-padding) 80px; }
+/* More Work Section (35:4026): 80px above a top rule, JG/Section 44px heading. */
+.work-section--more { margin-top: 80px; border-top: 1px solid var(--border); }
+.section-label { font-size: 44px; line-height: 46.2px; margin: 0 0 16px; }
+.work-cards, .work-cards__row { display: flex; gap: 16px; min-width: 0; }
+.work-cards { flex-direction: column; }
+.work-cards__row { margin-top: 16px; }
+.work-cards__row:first-of-type { margin-top: 0; }
+.work-cards__row > .project-card { flex: 1 1 50%; min-width: 0; }
+/* JG / Project Card: 485px tall at 1512 (32vw). Default = full-bleed teaser; hover reveals 144px metadata. */
+.project-card { display: flex; flex-direction: column; height: clamp(280px, 32vw, 485px); min-width: 0; background: #000; color: #fff; text-decoration: none; }
+.project-card__image { position: relative; flex: 1 1 auto; min-height: 0; border-radius: 0; overflow: hidden; transition: border-radius var(--transition); }
+.project-card__image img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity var(--transition), transform var(--transition); }
+.project-card__image-default { opacity: 1; transform: translateY(0); }
+.project-card__image-hover { opacity: 0; transform: translateY(24px); }
+.project-card__label { position: absolute; left: 12px; top: 12px; display: flex; flex-direction: column; height: 28px; padding: 0 10px; border-radius: 999px; overflow: hidden; background: #fff; color: #000; font-size: 20px; line-height: 28px; white-space: nowrap; }
+.project-card__label span { flex: none; height: 28px; transition: transform var(--transition); }
+/* Metadata sits on the card's stroke; clip-path (not overflow) keeps the corner marks intact.
+   Collapsed height equals one stroke so the -stroke bottom margin nets to zero and the image never covers the card's bottom border. */
+.project-card__details { display: flex; flex: none; height: var(--stroke); min-width: 0; margin: 0 calc(-1 * var(--stroke)) calc(-1 * var(--stroke)); opacity: 0; clip-path: inset(calc(-1 * var(--corner)) calc(-1 * var(--corner)) calc(-1 * var(--corner)) calc(-1 * var(--corner))); transition: height var(--transition), opacity var(--transition); }
+.project-card__metadata { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+.detail-row { display: flex; height: 48px; align-items: center; gap: 16px; padding: 0 16px; font-size: 12px; line-height: 16.8px; background: #000; }
+.detail-row > span:first-child { flex: 0 0 74px; }
+.detail-row > span:last-child { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.detail-row > img { width: 6px; height: 6px; flex: none; }
+.project-card__symbol { width: 144px; flex: 0 0 144px; align-self: stretch; margin-left: calc(-1 * var(--stroke)); background: #000; }
+.project-card__symbol img { width: 100%; height: 100%; object-fit: contain; }
+.project-card:is(:hover, :focus-visible) .project-card__image { border-radius: 16px; }
+.project-card:is(:hover, :focus-visible) .project-card__image-default { opacity: 0; transform: translateY(-24px); }
+.project-card:is(:hover, :focus-visible) .project-card__image-hover { opacity: 1; transform: translateY(0); }
+.project-card:is(:hover, :focus-visible) .project-card__label span { transform: translateY(-28px); }
+.project-card:is(:hover, :focus-visible) .project-card__details { height: calc(3 * 48px - 2 * var(--stroke)); opacity: 1; }
+/* Frame system (src/config/frame.ts): `.frame` = stroke + four corner marks centred on the stroke
+   midline. `.frame--subtle` uses the grey mark. Adjacent frames overlap strokes with -var(--stroke)
+   margins (see .cells / .stack) so shared edges are one line and shared corners one mark. */
+.frame { position: relative; border: var(--stroke) solid var(--border); }
+.frame::after { content: ''; position: absolute; inset: calc(var(--stroke) / 2 - var(--corner) / 2); pointer-events: none; z-index: 2;
+  background: linear-gradient(var(--mark), var(--mark)) left top / var(--corner) var(--corner) no-repeat,
+    linear-gradient(var(--mark), var(--mark)) right top / var(--corner) var(--corner) no-repeat,
+    linear-gradient(var(--mark), var(--mark)) left bottom / var(--corner) var(--corner) no-repeat,
+    linear-gradient(var(--mark), var(--mark)) right bottom / var(--corner) var(--corner) no-repeat; }
+.frame--subtle { --mark: var(--subtle); }
+.frame--plain::after { content: none; }
+/* Row of frames: each cell's left stroke overlaps the previous cell's right stroke. */
+.cells { display: flex; }
+.cells > .frame + .frame { margin-left: calc(-1 * var(--stroke)); }
+/* Column of frames. */
+.stack { display: flex; flex-direction: column; }
+.stack > .frame + .frame { margin-top: calc(-1 * var(--stroke)); }
+/* Cells nested inside a framed parent: pull them onto the parent's stroke so lines coincide. */
+.frame > .cells--inset { margin: calc(-1 * var(--stroke)); }
+.disciplines { background: var(--muted); padding: 20px var(--page-padding) 80px; }
+.disciplines__intro { width: 75%; font-size: 44px; line-height: 46.2px; }
+.disciplines__intro p + p { color: var(--border); }
+.disciplines__cards { display: flex; flex-wrap: wrap; gap: 16px; padding-top: clamp(70px, 14vw, 220px); }
+.discipline-card { display: flex; flex: 1 1 calc(50% - 16px); min-height: 217px; min-width: 360px; padding: 20px; align-items: center; justify-content: space-between; gap: 16px; }
+.discipline-card > div { min-width: 0; }
+.discipline-card span { font-size: 12px; }
+.discipline-card h3 { font-size: 28px; margin: 8px 0; }
+.discipline-card ul { list-style: none; padding: 0; font-size: 12px; line-height: 1.4; }
+.discipline-card li::before { content: '• '; }
+.discipline-card ul { line-height: 25.2px; }
+.discipline-card img { height: 100%; max-height: 177px; width: auto; aspect-ratio: 1 / 1; object-fit: contain; align-self: stretch; }
+/* JG / Footer 13:28: surface background, 624px contact panel, four equal info cells. */
+.footer { background: var(--surface); color: #000; padding: 24px var(--page-padding); }
+.footer__contact { min-height: 624px; padding: 20px; font-size: 56px; line-height: 61.6px; }
+.footer__contact > div { max-width: 720px; }
+.footer__contact-secondary { color: var(--subtle); }
+.footer__contact a { text-underline-offset: 4px; }
+.footer__columns { flex-wrap: wrap; margin-top: calc(-1 * var(--stroke)); }
+.info-cell { flex: 1 1 25%; min-width: 180px; min-height: 178px; display: flex; flex-direction: column; align-items: flex-start; padding: 20px; font-size: 20px; line-height: 24px; }
+.info-cell > span { color: var(--subtle); font-size: 12px; line-height: 16.8px; margin-bottom: 16px; }
+.info-cell a { text-underline-offset: 2px; }
+.project-cover { position: relative; padding: 40px 0; }
+.project-cover__image { aspect-ratio: 1068 / 601; overflow: hidden; }
+.project-cover__image img { width: 100%; height: 100%; object-fit: cover; }
+.project-cover h1 { position: absolute; right: 0; bottom: 0; background: #000; color: #fff; padding: 27px 60px; font-size: 56px; line-height: 61.6px; white-space: nowrap; }
+.project-intro { padding: 10px var(--page-padding); color: var(--surface); }
+.project-intro p { font-size: 44px; line-height: 46.2px; overflow-wrap: anywhere; }
+.project-intro p > span { font-size: 12px; line-height: 16.8px; margin-right: 0.6em; }
+.project-intro a { text-underline-offset: 4px; }
+.project-specs { display: flex; align-items: flex-end; gap: 10px; padding: 100px var(--page-padding) 40px; }
+.project-specs__label { flex: 0 0 160px; align-self: flex-start; font-size: 12px; line-height: 16.8px; }
+.project-specs__details { display: flex; flex: 1 1 0; min-width: 0; align-items: center; min-height: 188px; }
+.project-specs dl { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; align-self: stretch; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.project-specs dl > div { display: flex; align-items: center; gap: 10px; flex: 1 1 0; padding: 6px 0; font-size: 12px; line-height: 16.8px; color: var(--surface); border-top: 1px solid var(--border); }
+.project-specs dl > div:first-child { border-top: 0; }
+.project-specs dt { width: 72px; flex: 0 0 72px; }
+.project-specs dl img { width: 6px; height: 6px; flex: none; }
+.project-specs dd { min-width: 0; }
+.project-specs__symbol { flex: 0 0 188px; width: 188px; height: 189px; display: block; }
+.project-specs__symbol img { width: 100%; height: 100%; object-fit: contain; }
+/* JG Heading: 40px above a full-width rule, 20px padding, Display 56px. */
+.story-heading { padding-top: 40px; }
+.story-heading h2 { border-top: 1px solid var(--border); padding: 20px; font-size: 56px; line-height: 61.6px; }
+/* Column blocks: 1200px max, centred, 20px side gutters at narrower widths. */
+.story-paragraphs, .story-note, .story-media { width: min(1200px, calc(100% - 2 * var(--page-padding))); margin-left: auto; margin-right: auto; }
+.story-paragraphs { padding: 14px 0; font-size: 28px; line-height: 29.4px; }
+.story-paragraphs p + p { margin-top: 28px; }
+.story-paragraphs a { text-underline-offset: 4px; }
+.story-note { padding: 14px 0; font-size: 44px; line-height: 46.2px; }
+.story-media + .story-media { margin-top: 28px; }
+.story-video { aspect-ratio: 16 / 9; background: var(--border); }
+.story-video iframe { width: 100%; height: 100%; border: 0; }
+.story-row { display: flex; gap: 28px; }
+.story-row > .media-box, .story-row > .media-link { flex: 1 1 0; min-width: 0; }
+.story-columns { display: flex; align-items: flex-start; }
+.story-columns--center { justify-content: center; }
+.story-column { display: flex; flex-direction: column; min-width: 0; }
+.media-box { display: block; position: relative; width: 100%; overflow: hidden; }
+.media-box img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.media-link { display: block; }
+.media-link:hover { opacity: .9; }
+.project-page main { padding-bottom: 73px; }
+/* CAPE (Figma 71:8517): light/dark bands, exports in the 1200px column, 28px rhythm. */
+.cape__light { color: #000; background: #f6f2ee; }
+.cape__dark { background: #383736; padding: 40px 0; }
+.cape__light .story-heading h2 { border-top-color: #000; }
+.cape__light .story-paragraphs { color: #000; }
+.cape__column { width: min(1200px, calc(100% - 2 * var(--page-padding))); margin: 0 auto; }
+.cape__column > img { display: block; width: 100%; height: auto; }
+.cape__research { display: flex; flex-direction: column; gap: 28px; padding-top: 28px; }
+.cape__research h3 { font-size: 44px; line-height: 46.2px; }
+.cape__research h4 { font-size: 28px; line-height: 29.4px; font-weight: 400; }
+.cape__callout { background: #eab5b5; border-radius: 12px; padding: 20px; font-size: 20px; line-height: 24px; }
+/* Frame 2262: full-bleed row, mirrored render beside the award certificate. */
+.cape__award { display: flex; gap: 10px; align-items: stretch; padding-top: 40px; }
+.cape__award-render { flex: 1 1 0; min-width: 0; aspect-ratio: 3 / 2; object-fit: cover; background: #fff; transform: scaleX(-1); }
+.cape__award-certificate { flex: none; height: auto; aspect-ratio: 751 / 1051.5; object-fit: cover; }
+.cape__end { height: 73px; }
+.project-page--cape main { padding-bottom: 0; }
+.about-intro { padding: 80px var(--page-padding) 60px; }
+.about-intro h1 { width: 75%; font-size: 44px; line-height: 1.05; }
+/* Figma Ellipse 74: the portrait source is cropped to its upper 67%, offset ~17% from the top. */
+.about-intro__portrait { width: 298px; height: 298px; margin: 0 auto; border-radius: 50%; object-fit: cover; object-position: 50% 17%; }
+.about-columns { flex-wrap: wrap; margin: 0 var(--page-padding) 120px; min-height: 370px; }
+.about-columns > div { flex: 1 1 25%; min-width: 200px; padding: 18px; font-size: 20px; line-height: 1.2; }
+.about-columns span { display: block; margin-bottom: 25px; font-size: 12px; }
+.about-cv { padding: 20px var(--page-padding) 80px; border-top: 1px solid var(--border); }
+.about-cv h2 { font-size: 56px; margin-bottom: 80px; }
+/* Dense row group: one framed wrapper with marks, rows only separated by rules. */
+.about-cv__rows > div { display: flex; align-items: center; min-height: 48px; padding: 8px 16px; gap: 20px; font-size: 12px; }
+.about-cv__rows > div + div { border-top: var(--stroke) solid var(--border); }
+.about-cv > div > div span:first-child { width: 110px; flex: 0 0 110px; }
+.about-cv > div > div span:nth-child(3) { width: 230px; flex: 0 0 230px; }
+.not-found { min-height: 100vh; padding: 24px; }
+.not-found h1 { font-size: 56px; }
+@media (max-width: 900px) {
+  .work-hero__intro { flex-wrap: wrap; }
+  .work-hero__nav { flex-basis: 100%; }
+  .work-hero__intro > p, .work-hero__contact { flex-basis: 50%; }
+  .disciplines__intro { width: 90%; }
+  .navigation__links { flex-basis: 45%; }
+  .navigation__name, .navigation__email { flex-basis: 27.5%; }
+}
+@media (max-width: 640px) {
+  :root { --page-padding: 12px; }
+  .site-header { top: 12px; margin-top: 12px; }
+  .navigation { flex-wrap: wrap; font-size: 13px; }
+  .navigation__links { flex-basis: 100%; }
+  .navigation__name, .navigation__email { padding: 8px; }
+  .pill-link { height: 34px; font-size: 20px; line-height: 24px; }
+  .work-floating-nav { top: 12px; }
+  .work-hero { padding-top: 12px; }
+  .work-hero__intro > p, .work-hero__contact { flex-basis: 100%; padding: 12px; font-size: 20px; }
+  /* Stacked cells: each overlaps the previous one's bottom stroke and the outer side strokes. */
+  .work-hero__intro > .frame { margin: calc(-1 * var(--stroke)) calc(-1 * var(--stroke)) 0; }
+  .work-hero__intro > .frame:last-child { margin-bottom: calc(-1 * var(--stroke)); }
+  .navigation > .frame { margin: calc(-1 * var(--stroke)) calc(-1 * var(--stroke)) 0 !important; }
+  .navigation > .frame:last-child { margin-bottom: calc(-1 * var(--stroke)) !important; }
+  .navigation__name, .navigation__email { flex-basis: 100%; }
+  .work-hero__stage { height: 340px; min-height: 0; }
+  .section-label, .about-cv h2 { font-size: 36px; }
+  .work-section { padding-bottom: 48px; }
+  .work-cards__row { flex-direction: column; }
+  .project-card { height: 250px; }
+  .project-card__symbol { width: 94px; flex-basis: 94px; }
+  .detail-row { gap: 6px; padding: 0 7px; }
+  .detail-row > span:first-child { flex-basis: 42px; }
+  .disciplines { padding-bottom: 48px; }
+  .disciplines__intro { width: 100%; font-size: 28px; }
+  .disciplines__cards { padding-top: 50px; }
+  .discipline-card { min-width: 0; flex-basis: 100%; }
+  .footer__contact { min-height: 380px; font-size: 34px; }
+  .info-cell { flex-basis: 50%; min-width: 0; font-size: 16px; }
+  .project-cover { padding: 20px 0; }
+  .project-cover__image { aspect-ratio: 4 / 3; }
+  .project-cover h1 { padding: 12px 20px; font-size: 34px; line-height: 1.1; white-space: normal; max-width: 90%; }
+  .project-intro p { font-size: 28px; line-height: 1.1; }
+  .project-specs { padding: 60px 12px 30px; flex-direction: column; align-items: stretch; gap: 16px; }
+  .project-specs__label { flex-basis: auto; }
+  .project-specs__details { flex-wrap: wrap; }
+  .project-specs__symbol { flex-basis: 88px; width: 88px; height: 88px; }
+  .project-specs dt { width: 56px; flex-basis: 56px; }
+  .story-heading { padding-top: 24px; }
+  .story-heading h2 { padding: 16px 12px; font-size: 34px; line-height: 1.1; }
+  .story-paragraphs { font-size: 20px; line-height: 1.25; }
+  .story-paragraphs p + p { margin-top: 16px; }
+  .story-note { font-size: 24px; line-height: 1.15; }
+  .story-media + .story-media { margin-top: 12px; }
+  .story-row { flex-wrap: wrap; gap: 12px; }
+  .story-row > .media-box, .story-row > .media-link { flex-basis: calc(50% - 6px); }
+  .story-columns { flex-wrap: wrap; gap: 12px !important; }
+  .story-columns .story-column { flex: 1 1 calc(50% - 6px) !important; gap: 12px !important; }
+  .project-page main { padding-bottom: 40px; }
+  .cape__research h3 { font-size: 28px; line-height: 1.1; }
+  .cape__award { flex-wrap: wrap; }
+  .cape__award-certificate { width: 100%; }
+  .about-intro { padding: 40px 12px; }
+  .about-intro h1 { width: 100%; font-size: 28px; }
+  .about-intro__portrait { width: 180px; height: 180px; margin-top: 24px; }
+  .about-columns { margin: 0 12px 50px; }
+  .about-columns > div { flex-basis: 100%; }
+  .about-cv > div > div { flex-wrap: wrap; gap: 8px; }
+  .about-cv > div > div span:first-child { flex-basis: 90px; }
+  .about-cv > div > div span:nth-child(3) { flex-basis: calc(100% - 120px); width: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+/* Eros Trilogy (Figma 80:8779). Sub-headings are JG/Section 44px; body copy JG/Body 20px. */
+.eros__section { display: flex; flex-direction: column; gap: 28px; padding-top: 28px; }
+.eros__section--tight { gap: 12px; }
+.eros__section h3, .eros__chapters h3 { font-size: 44px; line-height: 46.2px; }
+.eros__body { font-size: 20px; line-height: 24px; }
+.eros__body p + p { margin-top: 0; }
+.eros__lead { font-size: 28px; line-height: 29.4px; }
+.eros__portraits { display: flex; justify-content: space-between; align-items: center; }
+.eros__smoking { display: flex; gap: 10px; align-items: flex-start; }
+.eros__smoking .eros__body { flex: 1 1 0; min-width: 0; letter-spacing: 0.8px; }
+.eros__smoking-pics { flex: none; width: 277px; height: auto; }
+.eros__theory { display: flex; gap: 28px; align-items: flex-start; }
+.eros__theory-left, .eros__theory-right { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 28px; }
+.eros__theory-left figure { display: flex; flex-direction: column; gap: 28px; }
+.eros__theory-left figure img { width: 350px; max-width: 100%; height: auto; }
+.eros__theory-right { justify-content: space-between; align-self: stretch; }
+.eros__freud { display: flex; justify-content: space-between; align-items: stretch; gap: 10px; }
+.eros__callout { flex: 0 1 417px; background: var(--subtle); border-radius: 13px; padding: 12px 20px; font-size: 28px; line-height: 29.4px; }
+.eros__freud img { flex: none; width: 159px; height: auto; object-fit: contain; object-position: bottom; }
+/* Metaphor: banner with a radial glow, two percentage-positioned collages, and the gum bubble. */
+.eros__idea { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 14px 0; text-align: center; background: radial-gradient(ellipse 65% 140% at 50% 50%, rgba(180,180,180,.5), rgba(101,101,101,.5) 50%, rgba(22,22,22,.5) 100%); }
+.eros__idea p:first-child { font-size: 20px; line-height: 24px; }
+.eros__idea p:last-child { font-size: 28px; line-height: 29.4px; }
+.eros__metaphor { display: flex; gap: 28px; }
+.eros__collage { position: relative; flex: 1 1 0; min-width: 0; }
+.eros__collage > * { position: absolute; }
+.eros__collage img { object-fit: contain; object-position: bottom; }
+.eros__collage-box { background: #202020; }
+.eros__collage--lines { aspect-ratio: 586 / 234.5; }
+.eros__collage--lines .eros__collage-box { left: 60.14%; top: 6.5%; width: 39.86%; height: 82.5%; }
+.eros__collage--lines .eros__collage-gum { left: 0; top: 0; width: 32.12%; height: 94%; transform: rotate(180deg); }
+.eros__collage--lines .eros__collage-proto { left: 23.23%; top: 0; width: 36.92%; height: 100%; transform: rotate(14.92deg); }
+.eros__collage--lines p { left: 63.78%; top: 28.7%; width: 34.4%; }
+.eros__collage--bags { aspect-ratio: 586 / 256.76; }
+.eros__collage--bags .eros__collage-bag { left: 0; top: 3.3%; width: 42.77%; height: 82.8%; }
+.eros__collage--bags .eros__collage-bubble { left: 34.17%; top: 0; width: 65.83%; height: 100%; object-fit: cover; }
+.eros__collage--bags .eros__collage-box { left: 38.78%; top: 8.6%; width: 30.4%; height: 77.5%; background: rgba(32,32,32,.5); }
+.eros__collage--bags p { left: 41.93%; top: 20%; width: 24.74%; }
+.eros__bubble { position: relative; aspect-ratio: 1200 / 348; }
+.eros__bubble-face { position: absolute; left: 0; top: 0; width: 46.4%; height: 100%; object-fit: cover; border-radius: 12px; transform: scaleX(-1); }
+.eros__bubble-shape { position: absolute; left: 2.53%; top: 4.9%; width: 97.47%; height: 80.8%; mask-size: 100% 100%; mask-repeat: no-repeat; -webkit-mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; }
+.eros__bubble-shape > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: bottom; }
+.eros__bubble-text { position: absolute; inset: 0; left: 9%; width: 84%; display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: 12px; color: #000; font-size: 28px; line-height: 29.4px; }
+.eros__bubble-title { text-align: center; }
+.eros__bleed { margin-top: 40px; }
+.eros__bleed img { width: 100%; aspect-ratio: 1512 / 985; height: auto; object-fit: cover; object-position: top; }
+.eros__chapters { display: flex; flex-direction: column; gap: 28px; padding-top: 40px; }
+.eros__chapter-row { display: flex; gap: 28px; align-items: flex-start; }
+.eros__chapter { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+.eros__chapter h3 { margin-bottom: 16px; font-size: 28px; line-height: 29.4px; }
+.eros__chapter--center { align-items: center; }
+.eros__chapter--center > * { width: 100%; }
+.eros__chapter--gap14 { gap: 14px; }
+.eros__chapter--gap18 { gap: 18px; }
+.eros__grid2 { display: flex; flex-wrap: wrap; gap: 18px 19px; }
+.eros__grid2 > * { flex: 1 1 calc(50% - 10px); min-width: 0; }
+.eros__confront-still { width: 400px !important; max-width: 100%; height: auto; }
+.eros__strip { display: flex; }
+.eros__strip > * { flex: 1 1 0; min-width: 0; }
+.eros__strip--gap18 { gap: 18px; }
+.eros__chapter ol { padding-left: 30px; margin: 0; }
+@media (max-width: 900px) {
+  .eros__smoking, .eros__theory, .eros__metaphor, .eros__chapter-row { flex-direction: column; }
+  .eros__smoking-pics { width: 100%; max-width: 277px; }
+  .eros__section h3, .eros__chapters h3 { font-size: 28px; line-height: 1.1; }
+  .eros__lead, .eros__callout, .eros__bubble-text { font-size: 18px; line-height: 1.2; }
+  .eros__bubble { aspect-ratio: auto; display: flex; flex-direction: column; }
+  .eros__bubble-face { display: none; }
+  .eros__bubble-shape { position: static; width: 100%; height: auto; mask-image: none !important; -webkit-mask-image: none !important; }
+  .eros__bubble-shape > img { display: none; }
+  .eros__bubble-text { position: static; width: auto; color: #fff; padding: 0; }
+  .eros__collage p { font-size: 14px; line-height: 1.2; }
+}

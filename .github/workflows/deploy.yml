@@ -32,7 +32,18 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: Archive/package-lock.json
+          cache-dependency-path: |
+            package-lock.json
+            Archive/package-lock.json
+
+      # ---- New portfolio -> https://shuoyuewu.com/ ----
+      - name: Install portfolio dependencies
+        run: npm ci
+
+      - name: Check and build portfolio
+        run: |
+          npm run lint
+          npm run build
 
       # ---- Archived site -> https://shuoyuewu.com/old/ ----
       - name: Install archive dependencies
@@ -47,10 +58,8 @@ jobs:
       - name: Assemble site
         run: |
           mkdir -p site/old
+          cp -R dist/. site/
           cp -R Archive/dist/. site/old/
-          # Root is intentionally blank until the new site is built.
-          cp site-root/index.html site/index.html
-          cp site-root/404.html site/404.html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

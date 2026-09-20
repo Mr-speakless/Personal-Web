@@ -1,0 +1,11 @@
+[
+  { "path": "/", "title": "Work — Shuoyue Wu", "description": "Selected work by Shuoyue Wu, a creative technologist working across design, AI, and interactive media." },
+  { "path": "/about", "title": "About — Shuoyue Wu", "description": "About Shuoyue Wu: creative technologist, designer, developer, and new media artist." },
+  { "path": "/work/noe", "title": "Noë & Associates — Shuoyue Wu", "description": "AI film and pipeline development at Noë & Associates." },
+  { "path": "/work/cue", "title": "CUE Group — Shuoyue Wu", "description": "Consumer AI products and ComfyUI workflows at CUE Group." },
+  { "path": "/work/jingdong", "title": "JingDong — Shuoyue Wu", "description": "AI tools for e-commerce sellers and AI fashion styling at JD.com." },
+  { "path": "/work/covid19", "title": "COVID19 Dashboard — Shuoyue Wu", "description": "A COVID19 data visualization dashboard developed with NYU faculty." },
+  { "path": "/work/eureka", "title": "Eureka — Shuoyue Wu", "description": "Eureka, an AI-animated short film." },
+  { "path": "/work/cape", "title": "CAPE — Shuoyue Wu", "description": "CAPE, an award-winning wearable product design for posture awareness." },
+  { "path": "/work/eros-trilogy", "title": "Eros Trilogy — Shuoyue Wu", "description": "Eros Trilogy, an interactive installation and experimental film." }
+]

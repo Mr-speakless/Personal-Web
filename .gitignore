@@ -25,3 +25,4 @@ dist-ssr
 
 # Assembled GitHub Pages output
 site
+.claude/
