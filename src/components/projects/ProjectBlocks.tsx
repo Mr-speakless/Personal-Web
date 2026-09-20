@@ -26,7 +26,7 @@ export function ProjectBlocks({ blocks, projectTitle }: { blocks: Block[]; proje
         return <div className="story-note" key={key}><p>{block.text}</p></div>
       case 'video':
         return <div className="story-media story-video" key={key}>
-          <iframe src={`https://www.youtube-nocookie.com/embed/${block.id}`} title={block.title} loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
+          <iframe src={`https://www.youtube-nocookie.com/embed/${block.id}${block.start ? `?start=${block.start}` : ''}`} title={block.title} loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
         </div>
       case 'embed':
         return <div className="story-media story-video" key={key} style={{ aspectRatio: `${block.ratio}` }}>

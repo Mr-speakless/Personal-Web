@@ -22,7 +22,7 @@
 
 已执行检查：见上；`node` 脚本核对 `media.ts` 192 个路径全部存在。
 
-已知问题 / 待用户确认：Figma 源图本身低分辨率——CUE 封面 1365px、JingDong 封面 1427px、Eros 胶片 1592px / 对抗截图 1024px，需替换源图才能更清晰；Noe 视频临时 ID；`og:image` 缺；旧 Figma 卡片 teaser 图已删除（不再使用）。
+已知问题 / 待用户确认：Figma 源图本身低分辨率——CUE 封面 1365px、JingDong 封面 1427px、Eros 胶片 1592px / 对抗截图 1024px，需替换源图才能更清晰；Noe 视频已换正式 ID `hNUpk2jYVL4`（start=123）；`og:image` 缺；旧 Figma 卡片 teaser 图已删除（不再使用）。
 
 本地与发布状态：已提交 `fed45d9` 并推送到 `origin/codex/portfolio-implementation`；未合并 main，GitHub Pages 仍是旧站（workflow 只在 push main 时触发）。
 

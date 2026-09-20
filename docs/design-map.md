@@ -26,7 +26,7 @@
 | 卡片 default/hover 图片上移渐隐与封面渐显、标签上下滑动、144px 元信息 | `ProjectCard` CSS | 已实现 |
 | 四角标记随容器边界伸缩 | `BorderCorners` | 已实现 |
 | Work 介绍及 About 文本占容器可用宽度的 75% | `.disciplines__intro`、`.about-intro h1` | 已实现 |
-| Noe 临时视频 `3k7AbJDKz3k` | `projects.ts` | 已实现，待用户日后替换 |
+| Noe 正式视频 `hNUpk2jYVL4`（annotation 含 start=123） | `projects.ts` | 已实现（2026-09-20） |
 | Noe 新增段落 + LinkedIn 嵌入（159:1647、159:1650，annotation 给出 iframe） | `projects.ts` `embed` block | 已实现（2026-09-19） |
 | COVID19 三张图片链接指定 dashboard | `projects.ts`、`StorySection` | 已实现 |
 | Eureka 视频 `_Y6XSFS4PVM` | `projects.ts` | 已实现 |
@@ -68,4 +68,3 @@ Figma 某些 section 没有 Fill Container/Auto Layout 网页行为：代码用 
 - Figma 文案可能含原稿笔误，例如 `NewYork`、`BoB`、`Transsion.lnc`、`studies.The`、`word`；现按画板保留，修改前请用户确认。
 - 分享预览图尚未指定；已经有 title、description、canonical、Open Graph 文字元数据，`og:image` 待素材。
 - 组件页出现的旧模板链接 `jackygrob.com` 未进入新站。没有确定目标的旧模板链接未发布。
-- Noe 视频按 annotation 暂用当前 YouTube ID，待用户提供最终视频。
