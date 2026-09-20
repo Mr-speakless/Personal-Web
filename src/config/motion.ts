@@ -54,17 +54,17 @@ export const motion = {
     },
     material: {
       // Base colour of the metal (sRGB hex). Near-white so reflections of the panels read as chrome.
-      color: 0xd8dbe0,
+      color: 0xB6B6B6,
       metalness: 1,
       // 0 = mirror, 1 = fully diffuse. ~0.22 softens the panel reflections into diffuse glows.
-      roughness: 0.22,
+      roughness: 0.2,
       clearcoat: 0.3,
       clearcoatRoughness: 0.1,
       // Thin-film iridescence adds subtle colour shifts across the surface (0 disables).
       iridescence: 0.12,
       iridescenceIOR: 1.5,
       // Strength of the environment reflections.
-      envMapIntensity: 1.25,
+      envMapIntensity: 2,
     },
     /**
      * Studio environment baked into the reflections: emissive panels in a near-black room. Each panel
