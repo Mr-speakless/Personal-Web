@@ -2,7 +2,7 @@
 
 更新时间（含时区）：2026-09-19 20:25 EDT（America/New_York）
 
-当前分支 / 已核实的提交：`codex/portfolio-implementation`；起点 `d868b63`。本轮未提交、未推送。
+当前分支 / 已核实的提交：`codex/portfolio-implementation` @ `fed45d9`（已推送）。
 
 当前目标与阶段：用户第三轮反馈六项 + Noe 新增 LinkedIn 嵌入段落全部本地完成（点阵密度、CUE 封面、透明图、整站图片清晰度、Eros 首图、方框角块系统）；等待用户视觉验收。
 
@@ -24,7 +24,7 @@
 
 已知问题 / 待用户确认：Figma 源图本身低分辨率——CUE 封面 1365px、JingDong 封面 1427px、Eros 胶片 1592px / 对抗截图 1024px，需替换源图才能更清晰；Noe 视频临时 ID；`og:image` 缺；旧 Figma 卡片 teaser 图已删除（不再使用）。
 
-本地与发布状态：仅本地；未提交、未推送。
+本地与发布状态：已提交 `fed45d9` 并推送到 `origin/codex/portfolio-implementation`；未合并 main，GitHub Pages 仍是旧站（workflow 只在 push main 时触发）。
 
 下一位 agent 应先做的 1–3 件事：
 
