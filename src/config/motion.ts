@@ -56,8 +56,8 @@ export const motion = {
       // Base colour of the metal (sRGB hex). Near-white so reflections of the panels read as chrome.
       color: 0xd8dbe0,
       metalness: 1,
-      // 0 = mirror, 1 = fully diffuse. Low values give the hard chrome bands of the reference render.
-      roughness: 0.1,
+      // 0 = mirror, 1 = fully diffuse. ~0.22 softens the panel reflections into diffuse glows.
+      roughness: 0.22,
       clearcoat: 0.3,
       clearcoatRoughness: 0.1,
       // Thin-film iridescence adds subtle colour shifts across the surface (0 disables).
@@ -80,13 +80,13 @@ export const motion = {
       ambientIntensity: 0.55,
       panels: [
         // Big soft key light above-left: bright core fading out to the right.
-        { position: [-5, 6, 4], size: [16, 6], color: 0xffffff, intensity: 3.5, gradient: 'x' },
+        { position: [-5, 6, 4], size: [20, 9], color: 0xffffff, intensity: 2.6, gradient: 'x' },
         // Cool fill on the right, fading downward.
         { position: [8, 2, -1], size: [5, 12], color: 0xeef3ff, intensity: 2.2, gradient: 'y' },
         // Thin rim strip low in front so bottom edges catch a bright line.
         { position: [0, -6, 5], size: [16, 1.4], color: 0xffffff, intensity: 3, gradient: 'x' },
         // Overhead sliver.
-        { position: [2, 8, 0], size: [8, 1.6], color: 0xffffff, intensity: 3 },
+        { position: [2, 8, 0], size: [10, 2.5], color: 0xffffff, intensity: 2.2 },
         // Black flags: the dark bands that sweep across the metal as it turns.
         { position: [3, 1, 7], size: [5, 14], color: 0x000000, intensity: 0 },
         { position: [-8, 0, -2], size: [4, 14], color: 0x000000, intensity: 0 },
@@ -96,25 +96,26 @@ export const motion = {
     },
     // Base rect area lights (scene units + colour hex + intensity in nits).
     baseLights: [
-      { position: [-4, 3.5, 4], color: 0xffffff, intensity: 2.5, size: [4, 4] },
-      { position: [4.5, 2, 3], color: 0xe6eefc, intensity: 1.5, size: [3, 5] },
-      { position: [-2, -4, 3], color: 0xffffff, intensity: 1.2, size: [4, 3] },
+      { position: [-4, 3.5, 4], color: 0xfff0d6, intensity: 3, size: [4, 4] },
+      { position: [4.5, 2, 3], color: 0xcfe0ff, intensity: 2.2, size: [3, 5] },
+      { position: [-2, -4, 3], color: 0xffd2dc, intensity: 1.8, size: [4, 3] },
       { position: [3, -2.5, -3], color: 0xffffff, intensity: 1.5, size: [4, 4] },
     ] as ReadonlyArray<{ position: readonly [number, number, number]; color: number; intensity: number; size: readonly [number, number] }>,
     /** Pointer-driven torch: a spot light that follows the cursor over the stage. */
     pointerLight: {
       // Candela. Three.js uses physically based units, so hundreds are normal for a torch.
-      intensity: 220,
-      color: 0xffffff,
+      intensity: 1000,
+      // Warm tint so the torch reads as a distinct light against the cool studio reflections.
+      color: 0xffd9a8,
       // Scene units: pointer position mapped to ±x/±y, and the light's z distance from the model.
       rangeX: 6,
       rangeY: 4,
-      z: 5,
+      z: 4,
       // Cone angle in radians and softness of its edge (0–1).
-      angleRad: 0.42,
-      penumbra: 0.7,
+      angleRad: 0.5,
+      penumbra: 0.8,
       // Seconds for the light to ease toward the pointer (smaller = snappier).
-      followSeconds: 0.12,
+      followSeconds: 0.04,
       // Where the torch rests when the pointer leaves the stage.
       restPosition: [2.5, 2, 5] as readonly [number, number, number],
     },
