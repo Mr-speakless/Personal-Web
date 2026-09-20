@@ -13,15 +13,15 @@ export const motion = {
   dots: {
     // Pixels between marks. Figma draws 15 × 9 on the 1472×643 stage (≈105 × 80); the user asked
     // for roughly double that density (2026-09-19), so the grid is derived from this spacing.
-    spacingPx: 50,
+    spacingPx: 25,
     // Pixels. Size of one mark when idle.
-    sizePx: 4,
+    sizePx: 2,
     // Figma annotation: pointer influence radius ≈ 75 px, falling off with distance.
-    pointerRadiusPx: 75,
+    pointerRadiusPx: 85,
     // Multiplier added to the mark size at the pointer centre (1 = doubles the size).
-    extraScale: 1.2,
+    extraScale: 1.5,
     // 0–1 alpha when idle and the extra alpha added at the pointer centre.
-    baseAlpha: 0.85,
+    baseAlpha: 0.55,
     extraAlpha: 0.15,
     // Idle colour is Figma --jg-subtle; the pointer pushes it toward white.
     idleColor: [118, 118, 118] as const,
