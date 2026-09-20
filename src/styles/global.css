@@ -61,7 +61,8 @@ ul { padding-left: 1.2em; }
 /* Figma Work Title 35:3846: 1472×643 stage; the static render sits inset 200px left/right (13.6%). */
 .work-hero__stage { height: clamp(360px, 42.5vw, 643px); margin-top: 15px; position: relative; overflow: hidden; }
 .dot-field { position: absolute; inset: 0; width: 100%; height: 100%; }
-.logo-scene { position: absolute; inset: 0; }
+.logo-scene { position: absolute; inset: 0; cursor: grab; touch-action: pan-y; user-select: none; }
+.logo-scene--dragging { cursor: grabbing; }
 .logo-scene canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
 .logo-scene__still { position: absolute; inset: 0 13.6%; width: auto; max-width: none; height: 100%; object-fit: cover; opacity: 1; transition: opacity 0.6s ease; pointer-events: none; }
 .logo-scene--live .logo-scene__still { opacity: 0; }

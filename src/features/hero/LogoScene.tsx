@@ -7,6 +7,23 @@ import { media } from '../../content/media'
 
 const { logo } = motion
 
+/** White→black ramp used to fade a panel along one axis (multiplied with the panel colour). */
+function gradientTexture(axis: 'x' | 'y') {
+  const canvas = document.createElement('canvas')
+  canvas.width = axis === 'x' ? 256 : 1
+  canvas.height = axis === 'y' ? 256 : 1
+  const ctx = canvas.getContext('2d')!
+  const ramp = ctx.createLinearGradient(0, 0, axis === 'x' ? 256 : 0, axis === 'y' ? 256 : 0)
+  ramp.addColorStop(0, '#fff')
+  ramp.addColorStop(0.55, '#888')
+  ramp.addColorStop(1, '#000')
+  ctx.fillStyle = ramp
+  ctx.fillRect(0, 0, canvas.width, canvas.height)
+  const texture = new THREE.CanvasTexture(canvas)
+  texture.colorSpace = THREE.SRGBColorSpace
+  return texture
+}
+
 /** Dark room with emissive panels; baked by PMREM into the metal's reflections (see motion.logo.environment). */
 function buildStudioEnvironment() {
   const env = new THREE.Scene()
@@ -17,10 +34,9 @@ function buildStudioEnvironment() {
   )
   env.add(room)
   for (const panel of panels) {
-    const mesh = new THREE.Mesh(
-      new THREE.PlaneGeometry(panel.size[0], panel.size[1]),
-      new THREE.MeshBasicMaterial({ color: new THREE.Color(panel.color).multiplyScalar(panel.intensity), side: THREE.DoubleSide }),
-    )
+    const material = new THREE.MeshBasicMaterial({ color: new THREE.Color(panel.color).multiplyScalar(panel.intensity), side: THREE.DoubleSide })
+    if (panel.gradient) material.map = gradientTexture(panel.gradient)
+    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(panel.size[0], panel.size[1]), material)
     mesh.position.set(...panel.position)
     mesh.lookAt(0, 0, 0)
     env.add(mesh)
@@ -92,12 +108,22 @@ export function LogoScene() {
 
     let loaded = false
     let visible = true
+    // Drag-to-rotate state: while dragging, yaw follows the pointer; after release, the fling decays.
+    let dragging = false
+    let dragLastX = 0
+    let dragLastTime = 0
+    let flingRadPerSecond = 0
     let raf = 0
     let last = 0
     let disposed = false
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)')
     const step = (dt: number) => {
-      if (loaded && !reduced.matches) spinner.rotation.y += logo.rotationYRadPerSecond * dt
+      if (loaded && !dragging) {
+        if (!reduced.matches) spinner.rotation.y += logo.rotationYRadPerSecond * dt
+        spinner.rotation.y += flingRadPerSecond * dt
+        flingRadPerSecond *= Math.pow(logo.drag.inertiaPerSecond, dt)
+        if (Math.abs(flingRadPerSecond) < 0.001) flingRadPerSecond = 0
+      }
       torch.position.lerp(torchGoal, 1 - Math.exp(-dt / p.followSeconds))
       renderer.render(scene, camera)
     }
@@ -107,7 +133,7 @@ export function LogoScene() {
       const dt = Math.min((time - last) / 1000 || 0, 0.05)
       last = time
       step(dt)
-      const settled = torch.position.distanceTo(torchGoal) < 0.01
+      const settled = torch.position.distanceTo(torchGoal) < 0.01 && flingRadPerSecond === 0 && !dragging
       if (!reduced.matches || !settled) raf = requestAnimationFrame(render)
     }
     if (import.meta.env.DEV) Object.assign(window, { __logoDebug: { scene, renderer, camera, material, torch, torchGoal, spinner, step } })
@@ -130,12 +156,46 @@ export function LogoScene() {
       )
       start()
     }
+    const dragStart = (event: PointerEvent) => {
+      if (!loaded || event.button !== 0) return
+      dragging = true
+      flingRadPerSecond = 0
+      dragLastX = event.clientX
+      dragLastTime = performance.now()
+      host.setPointerCapture(event.pointerId)
+      host.classList.add('logo-scene--dragging')
+      start()
+    }
+    const dragMove = (event: PointerEvent) => {
+      if (!dragging) return
+      const now = performance.now()
+      const dx = event.clientX - dragLastX
+      const dtSec = Math.max((now - dragLastTime) / 1000, 1 / 240)
+      spinner.rotation.y += dx * logo.drag.radPerPx
+      flingRadPerSecond = (dx * logo.drag.radPerPx) / dtSec
+      dragLastX = event.clientX
+      dragLastTime = now
+      start()
+    }
+    const dragEnd = (event: PointerEvent) => {
+      if (!dragging) return
+      dragging = false
+      if (host.hasPointerCapture(event.pointerId)) host.releasePointerCapture(event.pointerId)
+      host.classList.remove('logo-scene--dragging')
+      // A pause before release means no fling.
+      if (performance.now() - dragLastTime > 80) flingRadPerSecond = 0
+      start()
+    }
     const leave = () => { torchGoal.set(...p.restPosition); start() }
     const onVisibility = () => { if (document.hidden) { cancelAnimationFrame(raf); raf = 0 } else start() }
     resize.observe(host)
     intersection.observe(host)
     host.addEventListener('pointermove', pointer)
     host.addEventListener('pointerleave', leave)
+    host.addEventListener('pointerdown', dragStart)
+    host.addEventListener('pointermove', dragMove)
+    host.addEventListener('pointerup', dragEnd)
+    host.addEventListener('pointercancel', dragEnd)
     document.addEventListener('visibilitychange', onVisibility)
     reduced.addEventListener('change', start)
 
@@ -162,11 +222,15 @@ export function LogoScene() {
       resize.disconnect(); intersection.disconnect()
       host.removeEventListener('pointermove', pointer)
       host.removeEventListener('pointerleave', leave)
+      host.removeEventListener('pointerdown', dragStart)
+      host.removeEventListener('pointermove', dragMove)
+      host.removeEventListener('pointerup', dragEnd)
+      host.removeEventListener('pointercancel', dragEnd)
       document.removeEventListener('visibilitychange', onVisibility)
       reduced.removeEventListener('change', start)
       spinner.traverse((child) => { if (child instanceof THREE.Mesh) child.geometry.dispose() })
       material.dispose(); envMap.dispose(); pmrem.dispose(); renderer.dispose()
-      envScene.traverse((child) => { if (child instanceof THREE.Mesh) { child.geometry.dispose(); (child.material as THREE.Material).dispose() } })
+      envScene.traverse((child) => { if (child instanceof THREE.Mesh) { child.geometry.dispose(); const m = child.material as THREE.MeshBasicMaterial; m.map?.dispose(); m.dispose() } })
       renderer.domElement.remove()
     }
   }, [])

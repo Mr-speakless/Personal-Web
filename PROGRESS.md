@@ -42,3 +42,4 @@
 - 2026-09-19（Claude，第三轮）：方框角块系统、全站 WebP 高清素材、点阵密度、CUE 封面、CUE/COVID19/Eureka 画板更新。
 - 2026-09-19（Claude）：Noe 按 Figma 新增段落与 LinkedIn 视频嵌入（新 `embed` 内容块）。
 - 2026-09-20（Claude）：Noe 换正式视频；合并 main 并部署；线上路由与旧站验证通过。
+- 2026-09-20（Claude）：Hero 材质改为镜面铬金属 + 渐变面板/黑旗环境（`motion.logo.environment`）；新增按住拖拽绕竖轴旋转（`motion.logo.drag`，松手带惯性）。仅推到开发分支，未合并 main。
