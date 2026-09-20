@@ -26,7 +26,7 @@
 | 卡片 default/hover 图片上移渐隐与封面渐显、标签上下滑动、144px 元信息 | `ProjectCard` CSS | 已实现 |
 | 四角标记随容器边界伸缩 | `BorderCorners` | 已实现 |
 | Work 介绍及 About 文本占容器可用宽度的 75% | `.disciplines__intro`、`.about-intro h1` | 已实现 |
-| Noe 正式视频 `hNUpk2jYVL4`（annotation 含 start=123） | `projects.ts` | 已实现（2026-09-20） |
+| Noe 正式视频 `hNUpk2jYVL4`（用户要求从头播放） | `projects.ts` | 已实现（2026-09-20） |
 | Noe 新增段落 + LinkedIn 嵌入（159:1647、159:1650，annotation 给出 iframe） | `projects.ts` `embed` block | 已实现（2026-09-19） |
 | COVID19 三张图片链接指定 dashboard | `projects.ts`、`StorySection` | 已实现 |
 | Eureka 视频 `_Y6XSFS4PVM` | `projects.ts` | 已实现 |

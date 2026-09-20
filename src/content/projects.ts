@@ -72,8 +72,8 @@ export const projects: Project[] = [
     blocks: [
       { kind: 'heading', text: 'AI Film' },
       { kind: 'paragraphs', text: ['The following is a collection of samples that are not related to any client projects I participated in. They are only used to demonstrate the aesthetic I produced.'] },
-      // Figma annotation (71:7925): final YouTube hNUpk2jYVL4, embed starts at 123 s.
-      { kind: 'video', id: 'hNUpk2jYVL4', start: 123, title: 'Noë & Associates AI film' },
+      // Figma annotation (71:7925): final YouTube hNUpk2jYVL4 (user: play from the start, ignore the embed's start=123).
+      { kind: 'video', id: 'hNUpk2jYVL4', title: 'Noë & Associates AI film' },
       // Figma 159:1647 + 159:1650 (annotation: LinkedIn embed, 1200×620 box).
       { kind: 'paragraphs', text: ['One more Client’s LinkedIn post that shows our work!'] },
       { kind: 'embed', src: 'https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7505162738852147200?compact=1', title: 'Client LinkedIn post featuring Noë & Associates work', ratio: ratio(1200, 620) },
