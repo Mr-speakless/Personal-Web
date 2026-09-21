@@ -43,3 +43,4 @@
 - 2026-09-19（Claude）：Noe 按 Figma 新增段落与 LinkedIn 视频嵌入（新 `embed` 内容块）。
 - 2026-09-20（Claude）：Noe 换正式视频；合并 main 并部署；线上路由与旧站验证通过。
 - 2026-09-20（Claude）：Hero 材质改为镜面铬金属 + 渐变面板/黑旗环境（`motion.logo.environment`）；新增按住拖拽绕竖轴旋转（`motion.logo.drag`，松手带惯性）。仅推到开发分支，未合并 main。
+- 2026-09-21（Claude）：修复 Eros 相册 17 张照片不显示（`.story-column` 缺默认 `flex: 1 1 0`，列宽为 0）；合并 main 部署。
